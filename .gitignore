@@ -1,0 +1,25 @@
+# Node.js (Angular)
+node_modules/
+dist/
+*.log
+
+# ASP.NET Core (Visual Studio)
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.db
+*.bak
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# Mac system files
+.DS_Store
+
+# Linux system files
+*.swp
