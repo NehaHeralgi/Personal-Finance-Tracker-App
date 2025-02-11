@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,14 @@ export class CommonService {
   }
   // Call to API to add a transaction
   addTransaction(transaction: any): Observable<any> {
+    const userId = localStorage.getItem('userId');  // Retrieve UserId from localStorage
+
+    if (userId) {
+        transaction.userId = userId;  // Add the UserId to the transaction object
+    } else {
+        console.error('User not logged in');
+        return of(null);  // Handle case where UserId is not available
+    }
     return this.http.post<any>(`${this.apiUrl}/Transaction/CreateTransaction`, transaction);
   }
 

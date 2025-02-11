@@ -44,6 +44,8 @@ export class LoginComponent {
       (response) => {
         // Store the token in localStorage
         localStorage.setItem('token', response.token);
+        const decodedToken = this.decodeJwt(response.token);  // Decode the JWT token to get userId
+        localStorage.setItem('userId', decodedToken.userId);
         // Redirect to the dashboard page
         this.router.navigate(['/dashboard']);
       },
@@ -51,5 +53,10 @@ export class LoginComponent {
         alert('Login failed! Please check your credentials.');
       }
     );
+  }
+  decodeJwt(token: string): any {
+    const payload = token.split('.')[1];  // Get the payload part of the JWT token
+    const decoded = atob(payload);  // Decode it from Base64
+    return JSON.parse(decoded);  // Parse the JSON payload
   }
 }
