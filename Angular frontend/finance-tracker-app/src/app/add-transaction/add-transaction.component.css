@@ -1,0 +1,18 @@
+.add-transaction-container {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  mat-card {
+    padding: 20px;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  button {
+    width: 48%;
+  }
+  

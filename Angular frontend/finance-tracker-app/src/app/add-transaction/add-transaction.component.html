@@ -1,0 +1,44 @@
+<div class="add-transaction-container">
+    <mat-card>
+      <mat-card-title>Add Transaction</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="addTransactionForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount" type="number" placeholder="Enter amount" required />
+            <mat-error *ngIf="addTransactionForm.get('amount')?.hasError('required')">Amount is required</mat-error>
+            <mat-error *ngIf="addTransactionForm.get('amount')?.hasError('min')">Amount must be greater than 0</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category" required>
+              <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addTransactionForm.get('category')?.hasError('required')">Category is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" placeholder="Enter description" required />
+            <mat-error *ngIf="addTransactionForm.get('description')?.hasError('required')">Description is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Transaction Type</mat-label>
+            <mat-select formControlName="isExpense">
+              <mat-option [value]="true">Expense</mat-option>
+              <mat-option [value]="false">Income</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addTransactionForm.get('isExpense')?.hasError('required')">Transaction type is required</mat-error>
+          </mat-form-field>
+  
+          <div class="actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="addTransactionForm.invalid">Save</button>
+            <button mat-button type="button" (click)="onCancel()">Cancel</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
