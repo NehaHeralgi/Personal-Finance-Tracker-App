@@ -72,6 +72,7 @@ export class DashboardComponent {
   // Edit Transaction Method
   editTransaction(transaction: any) {
     debugger
+    console.log('Editing Transaction:', transaction); 
     const dialogRef = this.dialog.open(TransactionModalComponent, {
       data: transaction // Pass the transaction data to the modal for editing
     });

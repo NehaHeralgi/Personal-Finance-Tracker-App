@@ -38,23 +38,26 @@ export class TransactionModalComponent {
     // Fetch categories for dropdown
     this.transactionService.getCategories().subscribe(
       (data) => {
-        this.categories = data; // Assuming categories are returned in an array
+        this.categories = data; // Load categories
+  
+        // Ensure category is set AFTER categories are fetched
+        if (this.data) {
+          this.addTransactionForm.patchValue({
+            amount: this.data.amount,
+            category: this.data.categoryId, // Ensure this matches category list
+            description: this.data.description,
+            isExpense: this.data.isExpense
+          });
+        }
+        console.log('Categories:', this.categories);
+        console.log('Selected Category ID:', this.data?.categoryId);
       },
       (error) => {
         console.error('Error fetching categories', error);
       }
     );
-
-    // If editing, populate the form with data
-    if (this.data) {
-      this.addTransactionForm.patchValue({
-        amount: this.data.amount,
-        category: this.data.categoryId,
-        description: this.data.description,
-        isExpense: this.data.isExpense
-      });
-    }
   }
+  
 
   onSubmit(): void {
     if (this.addTransactionForm.invalid) return;

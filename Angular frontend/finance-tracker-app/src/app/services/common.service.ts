@@ -33,10 +33,18 @@ export class CommonService {
   }
   updateTransaction(transaction: any): Observable<any> {
     const token = localStorage.getItem('token'); // Retrieve token
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
-    return this.http.put<any>(`${this.apiUrl}/Transaction/${transaction.id}/UpdateTransaction`, transaction, { headers });
+  const userId = localStorage.getItem('userId'); // Retrieve UserId
+
+  if (!userId) {
+    console.error('UserId is missing. Make sure the user is logged in.');
+    return of(null);
   }
+
+  transaction.userId = userId; // Ensure UserId is set
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.put<any>(`${this.apiUrl}/Transaction/${transaction.id}/UpdateTransaction`, transaction, { headers });  }
   
   // Fetch categories for dropdown (this assumes you have an API for fetching categories)
   getCategories(): Observable<any[]> {

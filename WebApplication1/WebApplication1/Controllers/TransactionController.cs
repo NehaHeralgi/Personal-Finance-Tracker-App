@@ -44,23 +44,19 @@ namespace FinanceTrackerApi.Controllers
                 {
                     return Unauthorized("UserId not found in token.");
                 }
-
-                var transactions = await _context.Transactions
-                    .Where(t => t.UserId == userIdClaim) // Filter by userId
-                    .Join(_context.Categories,
-                          t => t.CategoryId,
-                          c => c.Id,
-                          (t, c) => new
-                          {
-                              t.Id,
-                              t.UserId,
-                              t.Amount,
-                              t.Date,
-                              t.Description,
-                              t.IsExpense,
-                              CategoryName = c.Name  // Include category name
-                          })
-                    .ToListAsync();
+                var transactions = await (from t in _context.Transactions
+                                          join c in _context.Categories on t.CategoryId equals c.Id
+                                          select new
+                                          {
+                                              t.Id,
+                                              t.Amount,
+                                              t.CategoryId,
+                                              CategoryName = c.Name, // ✅ Manually get category name
+                                              t.Description,
+                                              t.IsExpense,
+                                              t.Date,
+                                              t.UserId
+                                          }).ToListAsync();
 
                 return Ok(transactions);
             }
