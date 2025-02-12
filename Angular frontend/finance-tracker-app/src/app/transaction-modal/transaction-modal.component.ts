@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonService } from '../services/common.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -10,30 +10,31 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-add-transaction',
+  selector: 'app-transaction-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule],
-  templateUrl: './add-transaction.component.html',
-  styleUrl: './add-transaction.component.css'
+  imports: [CommonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule,MatDialogModule,ReactiveFormsModule],
+  templateUrl: './transaction-modal.component.html',
+  styleUrl: './transaction-modal.component.css'
 })
-export class AddTransactionComponent {
-  addTransactionForm!: FormGroup;
-  categories: any[] = []; // Categories for dropdown
+export class TransactionModalComponent {
+  addTransactionForm: FormGroup;
+  categories: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private transactionService: CommonService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
+    public dialogRef: MatDialogRef<TransactionModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any // If data exists, it's for editing
+  ) {
     this.addTransactionForm = this.fb.group({
       amount: ['', [Validators.required, Validators.min(1)]],
       category: ['', Validators.required],
       description: ['', Validators.required],
       isExpense: [true, Validators.required] // Default is Expense (true)
     });
+  }
 
+  ngOnInit(): void {
     // Fetch categories for dropdown
     this.transactionService.getCategories().subscribe(
       (data) => {
@@ -43,6 +44,16 @@ export class AddTransactionComponent {
         console.error('Error fetching categories', error);
       }
     );
+
+    // If editing, populate the form with data
+    if (this.data) {
+      this.addTransactionForm.patchValue({
+        amount: this.data.amount,
+        category: this.data.categoryId,
+        description: this.data.description,
+        isExpense: this.data.isExpense
+      });
+    }
   }
 
   onSubmit(): void {
@@ -58,18 +69,20 @@ export class AddTransactionComponent {
       date: new Date() // Set the current date
     };
 
-    this.transactionService.addTransaction(transaction).subscribe(
-      (response) => {
-        // After saving the transaction, redirect to dashboard
-        this.router.navigate(['/dashboard']);
-      },
-      (error) => {
-        alert('Error adding transaction!');
-      }
-    );
+    if (this.data) {
+      // Edit the existing transaction
+      this.transactionService.updateTransaction({ ...transaction, id: this.data.id }).subscribe(() => {
+        this.dialogRef.close('edit');
+      });
+    } else {
+      // Add new transaction
+      this.transactionService.addTransaction(transaction).subscribe(() => {
+        this.dialogRef.close('add');
+      });
+    }
   }
 
   onCancel(): void {
-    this.router.navigate(['/dashboard']);
+    this.dialogRef.close();
   }
 }

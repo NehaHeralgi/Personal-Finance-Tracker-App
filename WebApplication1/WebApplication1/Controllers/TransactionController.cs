@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using FinanceTrackerApi.Models;
 using Transaction = FinanceTrackerApi.Models.Transaction;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FinanceTrackerApi.Controllers
 {
@@ -22,15 +24,66 @@ namespace FinanceTrackerApi.Controllers
 
         // GET: api/Transaction
         [HttpGet("GetTransactions")]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions([FromHeader(Name = "Authorization")] string authorization)
         {
-            return await _context.Transactions.ToListAsync();
+
+            if (string.IsNullOrEmpty(authorization) || !authorization.StartsWith("Bearer "))
+            {
+                return BadRequest("Invalid or missing token.");
+            }
+
+            string token = authorization.Substring("Bearer ".Length).Trim();
+            var handler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                var jwtToken = handler.ReadJwtToken(token);
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Unauthorized("UserId not found in token.");
+                }
+
+                var transactions = await _context.Transactions
+                    .Where(t => t.UserId == userIdClaim) // Filter by userId
+                    .Join(_context.Categories,
+                          t => t.CategoryId,
+                          c => c.Id,
+                          (t, c) => new
+                          {
+                              t.Id,
+                              t.UserId,
+                              t.Amount,
+                              t.Date,
+                              t.Description,
+                              t.IsExpense,
+                              CategoryName = c.Name  // Include category name
+                          })
+                    .ToListAsync();
+
+                return Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error processing token: {ex.Message}");
+            }
         }
 
         // POST: api/Transaction
         [HttpPost("CreateTransaction")]
         public async Task<ActionResult<Transaction>> CreateTransaction(Transaction transaction)
         {
+            ////var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var userId = User.Identity?.Name;
+            //if (string.IsNullOrEmpty(userId))
+            //{
+            //    return Unauthorized(new { message = "User not authenticated" });
+            //}
+
+            //// Assign the logged-in user ID automatically
+            //transaction.UserId = userId;
+           
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetTransactions), new { id = transaction.Id }, transaction);

@@ -3,6 +3,7 @@ using FinanceTrackerApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FinanceTrackerApi.Controllers
 {
@@ -22,16 +23,44 @@ namespace FinanceTrackerApi.Controllers
         [HttpGet("GetCategories")]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+             return await _context.Categories.ToListAsync();
+
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            //if (string.IsNullOrEmpty(userId))
+            //{
+            //    return Unauthorized("User not authenticated");
+            //}
+
+            //var categories = await _context.Categories
+            //    .Where(c => c.UserId == userId || c.UserId == null) // Fetch user-specific & global categories
+            //    .ToListAsync();
+
+            //return Ok(categories);
         }
 
         // POST: api/Category
         [HttpPost("CreateCategory")]
         public async Task<ActionResult<Category>> CreateCategory(Category category)
         {
+            //_context.Categories.Add(category);
+            //await _context.SaveChangesAsync();
+            //return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated");
+            }
+
+            category.UserId = userId; // Assign logged-in user ID
+
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
+
         }
 
         // PUT: api/Category/{id}

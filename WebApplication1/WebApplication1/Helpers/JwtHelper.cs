@@ -1,6 +1,7 @@
 ﻿using FinanceTrackerApi.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace FinanceTrackerApi.Helpers
@@ -19,7 +20,8 @@ namespace FinanceTrackerApi.Helpers
             var claims = new[]
             {
             new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id),
-            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName)
+            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName),
+            new Claim("userId", user.Id)
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
