@@ -1,34 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { CommonService } from '../services/common.service';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { TransactionModalComponent } from '../transaction-modal/transaction-modal.component';
+import { CommonService } from '../services/common.service';
+import { MatButtonModule } from '@angular/material/button';
+import { DashboardChartsComponent } from '../dashboard-charts/dashboard-charts.component';
+import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { TransactionModalComponent } from '../transaction-modal/transaction-modal.component';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatTableModule,MatIconModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    DashboardChartsComponent,MatIcon,MatCard
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  showTable = true;
   totalIncome = 0;
   totalExpense = 0;
   balance = 0;
   transactions: any[] = [];
-
-  displayedColumns: string[] = ['date', 'category', 'amount', 'description','actions'];
+  displayedColumns: string[] = ['date', 'category', 'amount', 'description', 'actions'];
 
   constructor(
-    private authService: AuthService,
     private transactionService: CommonService,
-    public router: Router,
+    private authService: AuthService,
+    private router: Router,
     private dialog: MatDialog
   ) {}
 
@@ -44,18 +50,19 @@ export class DashboardComponent {
   }
 
   calculateSummary() {
-    // Calculate total income based on transactions marked as 'income'
     this.totalIncome = this.transactions
-      .filter((t) => t.isExpense === false) // Assuming `isExpense` is a boolean flag
+      .filter((t) => !t.isExpense)
       .reduce((sum, t) => sum + t.amount, 0);
 
-    // Calculate total expenses based on transactions marked as 'expense'
     this.totalExpense = this.transactions
-      .filter((t) => t.isExpense === true) // Assuming `isExpense` is a boolean flag
+      .filter((t) => t.isExpense)
       .reduce((sum, t) => sum + t.amount, 0);
 
-    // Calculate the balance (Income - Expense)
     this.balance = this.totalIncome - this.totalExpense;
+  }
+
+  toggleView() {
+    this.showTable = !this.showTable;
   }
 
   openTransactionModal() {
@@ -69,29 +76,26 @@ export class DashboardComponent {
       }
     });
   }
-  // Edit Transaction Method
+
   editTransaction(transaction: any) {
-    debugger
-    console.log('Editing Transaction:', transaction); 
     const dialogRef = this.dialog.open(TransactionModalComponent, {
-      data: transaction // Pass the transaction data to the modal for editing
+      data: transaction
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === 'edit') {
-        this.loadDashboardData();  // Refresh the transaction list after edit
+        this.loadDashboardData();
       }
     });
   }
 
-  // Delete Transaction Method with Confirmation Dialog
   deleteTransaction(transactionId: number) {
-    const confirmDelete = confirm('Are you sure you want to delete this transaction?');
-    if (confirmDelete) {
+    if (confirm('Are you sure you want to delete this transaction?')) {
       this.transactionService.deleteTransaction(transactionId).subscribe(() => {
-        this.loadDashboardData(); // Refresh the transaction list
+        this.loadDashboardData();
       });
-    }}
+    }
+  }
 
   logout() {
     this.authService.logout();
