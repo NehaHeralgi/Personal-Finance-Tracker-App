@@ -12,6 +12,7 @@ export class AuthService {
   // Login method
   login(email: string, password: string): Observable<{ token: string,userId:string }> {
     const loginPayload = { email, password };
+    localStorage.setItem('emailid', email);
     return this.http.post<{ token: string,userId:string }>(`${this.apiUrl}/login`, loginPayload);
   }
    // register method
@@ -24,4 +25,5 @@ export class AuthService {
     // Remove the token from localStorage
     localStorage.removeItem('token');
   }
+
 }
