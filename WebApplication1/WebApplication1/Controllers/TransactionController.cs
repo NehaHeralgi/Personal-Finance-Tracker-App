@@ -26,7 +26,6 @@ namespace FinanceTrackerApi.Controllers
         [HttpGet("GetTransactions")]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions([FromHeader(Name = "Authorization")] string authorization)
         {
-
             if (string.IsNullOrEmpty(authorization) || !authorization.StartsWith("Bearer "))
             {
                 return BadRequest("Invalid or missing token.");
@@ -44,18 +43,19 @@ namespace FinanceTrackerApi.Controllers
                 {
                     return Unauthorized("UserId not found in token.");
                 }
+
                 var transactions = await (from t in _context.Transactions
                                           join c in _context.Categories on t.CategoryId equals c.Id
+                                          where t.UserId == userIdClaim // Compare as string
                                           select new
                                           {
                                               t.Id,
                                               t.Amount,
                                               t.CategoryId,
-                                              CategoryName = c.Name, // ✅ Manually get category name
+                                              CategoryName = c.Name,
                                               t.Description,
                                               t.IsExpense,
-                                              t.Date,
-                                              t.UserId
+                                              t.Date
                                           }).ToListAsync();
 
                 return Ok(transactions);

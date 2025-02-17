@@ -101,15 +101,21 @@ export class DashboardChartsComponent implements OnChanges {
   }
 
   calculateBalanceGrowth() {
-    const data = this.transactions.map((t) => ({
-      name: t.date,
-      value: this.transactions
-        .filter((transaction) => new Date(transaction.date) <= new Date(t.date))
-        .reduce(
-          (sum, t) => (t.isExpense ? sum - t.amount : sum + t.amount),
-          0
-        ),
-    }));
-    return data;
+    if (!this.transactions || this.transactions.length === 0) {
+      return [];
+    }
+  
+    let balance = 0;
+    let seriesData = this.transactions.map((t) => {
+      balance += t.isExpense ? -t.amount : t.amount;
+      return { name: new Date(t.date).toISOString().split("T")[0], value: balance };
+    });
+  
+    return [
+      {
+        name: "Balance",
+        series: seriesData
+      }
+    ];
   }
 }

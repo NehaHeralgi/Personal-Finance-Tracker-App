@@ -54,7 +54,7 @@
   </mat-card>
 
   <ng-template #chartView>
-    <app-dashboard-charts></app-dashboard-charts>
+    <app-dashboard-charts [transactions]="transactions" ></app-dashboard-charts>
   </ng-template>
 
   <button mat-raised-button color="warn" (click)="logout()">Logout</button>
