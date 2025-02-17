@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
+import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -96,9 +97,15 @@ export class DashboardComponent {
       });
     }
   }
+  openProfileModal() {
+    const dialogRef = this.dialog.open(ProfileModalComponent, {
+      width: '300px'
+    });
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    dialogRef.afterClosed().subscribe(() => {
+      // Optional: Any action after modal is closed
+    });
   }
+
+
 }

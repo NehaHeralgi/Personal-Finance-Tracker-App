@@ -1,30 +1,46 @@
 <div class="dashboard-container">
-  <mat-card class="summary-card">
-    <h2>Financial Summary</h2>
-    <p>Total Income: ₹{{ totalIncome }}</p>
-    <p>Total Expenses: ₹{{ totalExpense }}</p>
-    <p>Balance: ₹{{ balance }}</p>
-  </mat-card>
+  <div class="navbar">
+
+    <mat-card class="summary-card">
+      <h2>Financial Summary</h2>
+      <p>Total Income: ₹{{ totalIncome }}</p>
+      <p>Total Expenses: ₹{{ totalExpense }}</p>
+      <p>Balance: ₹{{ balance }}</p>
+    </mat-card>
+    <mat-card class="profile-card">
+      <button>About</button>
+      <mat-icon (click)="openProfileModal()">account_circle</mat-icon>
+    </mat-card>
+
+  </div>
+
 
   <button mat-raised-button color="primary" (click)="openTransactionModal()">Add Transaction</button>
 
-  <button mat-raised-button color="accent" (click)="toggleView()">
-    {{ showTable ? 'View Charts 📊' : 'View Table 📑' }}
-  </button>
 
-  <mat-card class="transactions-card" *ngIf="showTable; else chartView">
-    <h2>Recent Transactions</h2>
-    <table mat-table [dataSource]="transactions" class="mat-elevation-z8">
+  <mat-card class="transactions-card">
+    <div class="header-container">
+      <h2>Recent Transactions</h2>
+      <button mat-raised-button color="accent" (click)="toggleView()">
+        {{ showTable ? 'View Charts 📊' : 'View Table 📑' }}
+      </button>
+    </div>
+    
+    <ng-template #chartView>
+      <app-dashboard-charts [transactions]="transactions"></app-dashboard-charts>
+    </ng-template>
+    
+    <table mat-table [dataSource]="transactions" class="mat-elevation-z8" *ngIf="showTable; else chartView">
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let transaction">{{ transaction.date | date:'shortDate' }}</td>
       </ng-container>
-
+  
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef>Category</th>
         <td mat-cell *matCellDef="let transaction">{{ transaction.categoryName }}</td>
       </ng-container>
-
+  
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef>Amount</th>
         <td mat-cell *matCellDef="let transaction">
@@ -33,12 +49,12 @@
           <mat-icon *ngIf="!transaction.isExpense" color="primary">trending_up</mat-icon>
         </td>
       </ng-container>
-
+  
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Description</th>
         <td mat-cell *matCellDef="let transaction">{{ transaction.description }}</td>
       </ng-container>
-
+  
       <!-- Actions: Edit & Delete -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -47,15 +63,11 @@
           <button mat-button color="warn" (click)="deleteTransaction(transaction.id)">Delete</button>
         </td>
       </ng-container>
-
+  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </mat-card>
-
-  <ng-template #chartView>
-    <app-dashboard-charts [transactions]="transactions" ></app-dashboard-charts>
-  </ng-template>
-
-  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  
+  
 </div>
