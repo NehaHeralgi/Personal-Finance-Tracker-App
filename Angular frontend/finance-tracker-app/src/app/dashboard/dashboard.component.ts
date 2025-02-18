@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
 import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,7 @@ import { ProfileModalComponent } from '../profile-modal/profile-modal.component'
     CommonModule,
     MatTableModule,
     MatButtonModule,
-    DashboardChartsComponent,MatIcon,MatCard
+    DashboardChartsComponent,MatIcon,MatCard,MatToolbarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

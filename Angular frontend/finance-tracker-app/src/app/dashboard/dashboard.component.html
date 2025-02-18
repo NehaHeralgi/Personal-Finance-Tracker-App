@@ -1,19 +1,29 @@
 <div class="dashboard-container">
   <div class="navbar">
+    <mat-toolbar color="primary">
+      <span>Financial Tracker</span>
+       <a mat-button>Home</a>
+       <a mat-button>About</a>
+       <a mat-button>Contact</a>
+       <mat-icon (click)="openProfileModal()">account_circle</mat-icon>
+     </mat-toolbar>
 
-    <mat-card class="summary-card">
-      <h2>Financial Summary</h2>
-      <p>Total Income: ₹{{ totalIncome }}</p>
-      <p>Total Expenses: ₹{{ totalExpense }}</p>
-      <p>Balance: ₹{{ balance }}</p>
-    </mat-card>
+
+
+<!-- 
+    
     <mat-card class="profile-card">
       <button>About</button>
-      <mat-icon (click)="openProfileModal()">account_circle</mat-icon>
-    </mat-card>
-
+      
+    </mat-card> -->
+  
   </div>
-
+  <mat-card class="summary-card">
+    <h2>Financial Summary</h2>
+    <p>Total Income: ₹{{ totalIncome }}</p>
+    <p>Total Expenses: ₹{{ totalExpense }}</p>
+    <p>Balance: ₹{{ balance }}</p>
+  </mat-card>
 
   <button mat-raised-button color="primary" (click)="openTransactionModal()">Add Transaction</button>
 
