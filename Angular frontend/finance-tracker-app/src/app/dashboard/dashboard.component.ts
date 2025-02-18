@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonService } from '../services/common.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
 import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+import { Sidebar } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +24,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     CommonModule,
     MatTableModule,
     MatButtonModule,
-    DashboardChartsComponent,MatIcon,MatCard,MatToolbarModule
+    DashboardChartsComponent,MatIcon,MatCard,MatToolbarModule,SidebarModule,ButtonModule,AvatarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -108,5 +112,12 @@ export class DashboardComponent {
     });
   }
 
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+
+  closeCallback(e: Event): void {
+      this.sidebarRef.close(e);
+  }
+
+  sidebarVisible: boolean = false;
 
 }
