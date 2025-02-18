@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+html body .mat-mdc-card {
+  background-color: white !important;
+}
+html body .mat-mdc-header-cell {
+  color: black !important;
+}
+html body .mat-mdc-table {
+  background-color: white !important;
+  color: black !important;
+}
