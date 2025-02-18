@@ -18,44 +18,64 @@ import { AvatarModule } from 'primeng/avatar';
 import { Sidebar } from 'primeng/sidebar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-alltransaction',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatButtonModule,
-    DashboardChartsComponent,
-    MatIcon,MatCard,
-    MatToolbarModule,
-    SidebarModule,
-    ButtonModule,
-    AvatarModule,
-    ToolbarModule,
-    RouterModule,
-    NavbarComponent
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  imports: [    
+      CommonModule,
+      MatTableModule,
+      MatButtonModule,
+      DashboardChartsComponent,
+      MatIcon,MatCard,
+      MatToolbarModule,
+      SidebarModule,
+      ButtonModule,
+      AvatarModule,
+      ToolbarModule,
+      RouterModule,
+      NavbarComponent,
+      TableModule,
+      FormsModule,
+      DropdownModule,
+      CalendarModule,
+      InputTextModule
+      
+    ],
+  templateUrl: './alltransaction.component.html',
+  styleUrl: './alltransaction.component.css'
 })
-export class DashboardComponent {
+export class AlltransactionComponent {
   showTable = true;
   totalIncome = 0;
   totalExpense = 0;
   balance = 0;
   transactions: any[] = [];
   displayedColumns: string[] = ['date', 'category', 'amount', 'description', 'actions'];
+  categories: any[] = [];
+  globalFilter: string = '';
+  dateFilter: any;
+  categoryFilter: string = '';
+  amountFilter: number | null = null;
+  descriptionFilter: string = '';
 
-  constructor(
-    private transactionService: CommonService,
-    private authService: AuthService,
-    private router: Router,
-    private dialog: MatDialog
-  ) {}
+  selectedTransaction: any = null;
+
+    constructor(
+      private transactionService: CommonService,
+      private authService: AuthService,
+      private router: Router,
+      private dialog: MatDialog
+    ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
+    this.loadCategories();
   }
 
   loadDashboardData() {
@@ -64,7 +84,11 @@ export class DashboardComponent {
       this.calculateSummary();
     });
   }
-
+  loadCategories() {
+    this.transactionService.getCategories().subscribe((data) => {
+      this.categories = data;
+    });
+  }
   calculateSummary() {
     this.totalIncome = this.transactions
       .filter((t) => !t.isExpense)
@@ -75,10 +99,6 @@ export class DashboardComponent {
       .reduce((sum, t) => sum + t.amount, 0);
 
     this.balance = this.totalIncome - this.totalExpense;
-  }
-
-  toggleView() {
-    this.showTable = !this.showTable;
   }
 
   openTransactionModal() {
@@ -112,6 +132,16 @@ export class DashboardComponent {
       });
     }
   }
-  
+
+  applyFilter() {
+    this.transactions = this.transactions.filter(transaction => {
+      return (
+        (!this.dateFilter || transaction.date === this.dateFilter) &&
+        (!this.categoryFilter || transaction.categoryName === this.categoryFilter) &&
+        (!this.amountFilter || transaction.amount == this.amountFilter) &&
+        (!this.descriptionFilter || transaction.description.toLowerCase().includes(this.descriptionFilter.toLowerCase()))
+      );
+    });
+  }
 
 }

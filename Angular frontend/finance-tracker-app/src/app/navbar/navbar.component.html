@@ -1,0 +1,36 @@
+<div class="navbar" >
+    <mat-toolbar color="primary" style="display: flex;justify-content: space-between;">
+      <p-button (onClick)="sidebarVisible = true" icon="pi pi-bars" ></p-button>
+      <span>Financial Tracker</span>      
+       <mat-icon (click)="openProfileModal()">account_circle</mat-icon>
+     </mat-toolbar>
+  </div>
+
+  <div class="card flex justify-content-center">
+
+    <p-sidebar #sidebarRef [(visible)]="sidebarVisible" [baseZIndex]="10000"  >
+      <ng-template pTemplate="headless">
+          <div class="flex flex-column h-full">
+              <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0" style="display: flex;justify-content: space-between;">
+                  <div class="inline-flex align-items-center gap-2">
+                     
+                      <span class="font-semibold text-5xl text-primary" style="margin: 0 0 0 2pc;font: 400 18px / 20px Roboto, sans-serif !important;">Personal Finance Tacker</span>
+                  </div>
+                  
+                  <div>
+                      <p-button type="button" (onClick)="closeCallback($event)" icon="pi pi-times" rounded="true" outlined="true" styleClass="h-2rem w-2rem"></p-button>
+                  </div>
+                  <div >
+                    <p-button [routerLink]="['/dashboard']">Dashboard</p-button>
+                    <p-button [routerLink]="['/alltransaction']">Transactions</p-button>
+                    <p-button>Reports</p-button>
+                    <p-button>Settings</p-button>
+                  </div>
+              </div>
+
+          </div>
+      </ng-template>
+  </p-sidebar>
+ 
+
+  </div>

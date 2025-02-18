@@ -1,4 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+html body .mat-mdc-card {
+  background-color: white !important;
+}
+html body .mat-mdc-card {
+  background-color: white !important;
+}
+html body .mat-mdc-header-cell {
+  color: black !important;
+}
+html body .mat-mdc-table {
+  background-color: white !important;
+  color: black !important;
+}
+
+html body .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: white;
+}
+html body .mat-mdc-dialog-container .mdc-dialog__title {
+  color: black;
+}
+html body .mat-mdc-button:not(:disabled) {
+  color: black;
+}
+html body .mat-mdc-button:disabled {
+  color: black;
+}
+html body .mat-mdc-raised-button[disabled].mat-mdc-button-disabled,
+.mat-mdc-raised-button.mat-mdc-button-disabled.mat-mdc-button-disabled {
+  background-color: grey;
+}
+.mat-mdc-dialog-container .mdc-dialog__content {
+  color: black !important;
+}
+
+.mat-body, .mat-body-2, .mat-typography .mat-body, .mat-typography .mat-body-2, .mat-typography {
+  font: 400 18px / 20px Roboto, sans-serif !important;
+}
