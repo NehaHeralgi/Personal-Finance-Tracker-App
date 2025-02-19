@@ -23,6 +23,9 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-alltransaction',
@@ -44,7 +47,8 @@ import { InputTextModule } from 'primeng/inputtext';
       FormsModule,
       DropdownModule,
       CalendarModule,
-      InputTextModule
+      InputTextModule,
+      CardModule
       
     ],
   templateUrl: './alltransaction.component.html',
@@ -142,6 +146,48 @@ export class AlltransactionComponent {
         (!this.descriptionFilter || transaction.description.toLowerCase().includes(this.descriptionFilter.toLowerCase()))
       );
     });
+  }
+
+  printTable() {
+    const tableElement = document.querySelector('.p-datatable table'); // Target the actual table inside p-table
+    if (tableElement) {
+      let newWin = window.open('', '', 'width=800,height=600');
+      newWin?.document.write(`
+        <html>
+        <head>
+          <title>Print Transactions</title>
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>
+          <h2>All Transactions</h2>
+          ${tableElement.outerHTML} <!-- Extracts the actual table -->
+        </body>
+        </html>
+      `);
+      newWin?.document.close();
+      newWin?.print();
+    } else {
+      console.error("Table not found! Make sure p-table is properly rendered.");
+    }
+  }
+  
+
+  downloadExcel() {
+    const worksheet = XLSX.utils.json_to_sheet(this.transactions);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions');
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    const data: Blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    saveAs(data, 'Transactions.xlsx');
   }
 
 }

@@ -6,11 +6,6 @@
   padding: 20px;
 }
 
-.summary-card {
-  width: 80%;
-  padding: 20px;
-  text-align: center;
-}
 .profile-card {
   width: 10%;
   padding: 20px;
@@ -70,4 +65,49 @@ tr:hover {
 ::ng-deep p-toolbar .p-toolbar {
   border: 0px !important;
   background-color: white !important;
+}
+.summary-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+
+}
+
+.summary-item {
+  width: 220px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+
+}
+
+.summary-item i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+
+.income i {
+  color: #28a745;
+}
+
+.expense i {
+  color: #dc3545;
+}
+
+.balance i {
+  color: #ffc107;
+}
+
+::ng-deep p-card .p-card{
+  width: 200px !important;
+} 
+
+.text-red {
+  color: #dc3545;
+}
+
+.text-green {
+  color: #28a745;
 }

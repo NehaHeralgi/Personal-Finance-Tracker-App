@@ -2,13 +2,47 @@
 
 <div class="dashboard-container">
 
-  <mat-card class="summary-card">
-    <h2>Financial Summary</h2>
-    <p>Total Income: ₹{{ totalIncome }}</p>
-    <p>Total Expenses: ₹{{ totalExpense }}</p>
-    <p>Balance: ₹{{ balance }}</p>
-  </mat-card>
-
+  <div class="p-grid summary-container">
+    <div class="p-col-12 p-md-4 p-lg-3">
+      <p-card class="summary-item income">
+        <ng-template pTemplate="header">
+          <i class="pi pi-wallet"></i>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p>Total Income</p>
+          <h3>₹{{ totalIncome }}</h3>
+        </ng-template>
+      </p-card>
+    </div>
+  
+    <div class="p-col-12 p-md-4 p-lg-3">
+      <p-card class="summary-item expense">
+        <ng-template pTemplate="header">
+          <i class="pi pi-shopping-cart"></i>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p>Total Expenses</p>
+          <h3>₹{{ totalExpense }}</h3>
+        </ng-template>
+      </p-card>
+    </div>
+  
+    <div class="p-col-12 p-md-4 p-lg-3">
+      <p-card class="summary-item balance">
+        <ng-template pTemplate="header">
+          <i class="pi pi-dollar"></i>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p>Balance</p>
+          <h3>₹{{ balance }}</h3>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  
+  
+  
+  
   <!-- <button mat-raised-button color="primary" (click)="openTransactionModal()">Add Transaction</button> -->
 
 
@@ -37,43 +71,29 @@
       <app-dashboard-charts [transactions]="transactions"></app-dashboard-charts>
     </ng-template>
     
-    <table mat-table [dataSource]="transactions" class="mat-elevation-z8" *ngIf="showTable; else chartView">
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let transaction">{{ transaction.date | date:'shortDate' }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef>Category</th>
-        <td mat-cell *matCellDef="let transaction">{{ transaction.categoryName }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Amount</th>
-        <td mat-cell *matCellDef="let transaction">
-          ₹{{ transaction.amount }}
-          <mat-icon *ngIf="transaction.isExpense" color="warn">trending_down</mat-icon>
-          <mat-icon *ngIf="!transaction.isExpense" color="primary">trending_up</mat-icon>
-        </td>
-      </ng-container>
-  
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Description</th>
-        <td mat-cell *matCellDef="let transaction">{{ transaction.description }}</td>
-      </ng-container>
-  
-      <!-- Actions: Edit & Delete -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let transaction">
-          <button mat-button color="primary" (click)="editTransaction(transaction)">Edit</button>
-          <button mat-button color="warn" (click)="deleteTransaction(transaction.id)">Delete</button>
-        </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    <p-table [value]="transactions" [paginator]="false" class="p-datatable-striped"  *ngIf="showTable; else chartView">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Description</th>
+        </tr>
+      </ng-template>
+    
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.date | date: 'shortDate' }}</td>
+          <td>{{ transaction.categoryName }}</td>
+          <td>
+            ₹{{ transaction.amount }}
+            <i class="pi" [ngClass]="transaction.isExpense ? 'pi-arrow-down text-red' : 'pi-arrow-up text-green'"></i>
+          </td>
+          <td>{{ transaction.description }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    
   </mat-card>
   
   

@@ -6,8 +6,8 @@
     <h2>All Transactions</h2>
     <div class="p-toolbar-group-start">
       <p-button icon="pi pi-plus" class="mr-2" (click)="openTransactionModal()" label="Add" />
-      <p-button icon="pi pi-print" class="mr-2" label="Print" />
-      <p-button icon="pi pi-download" label="Download" />
+      <p-button icon="pi pi-print" class="mr-2" label="Print" (click)="printTable()" />
+      <p-button icon="pi pi-download" label="Download"  (click)="downloadExcel()" />
     </div>
     <div class="p-toolbar-group-center">
       <span class="p-input-icon-left">
@@ -17,6 +17,7 @@
     </div>
   </p-toolbar>
 
+  <p-card >
   <!-- PrimeNG Data Table -->
   <p-table
     [value]="transactions"
@@ -57,4 +58,5 @@
       </tr>
     </ng-template>
   </p-table>
+</p-card>
 </div>

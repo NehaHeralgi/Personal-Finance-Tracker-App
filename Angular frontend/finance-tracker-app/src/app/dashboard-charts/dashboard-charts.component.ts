@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges,CUSTOM_ELEMENTS_SCHEMA   } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card'; // Corrected import
-import { MatIconModule } from '@angular/material/icon'; // Corrected import
-import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
@@ -12,9 +11,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatCardModule, // Corrected import
-    MatIconModule, // Corrected import
-    MatTableModule,
+    MatCardModule,
+    MatIconModule,
     NgxChartsModule,
   ],
   templateUrl: './dashboard-charts.component.html',
@@ -24,26 +22,18 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class DashboardChartsComponent implements OnChanges {
   @Input() transactions: any[] = [];
 
-  // Pie chart data (Expense vs Income)
   pieChartData: any[] = [];
-
-  // Bar chart data (Monthly Spending Trend)
   barChartData: any[] = [];
-
-  // Line chart data (Balance Growth Over Time)
   lineChartData: any[] = [];
 
-  // Correctly typed view
-  view: [number, number] = [700, 400]; // Default size
+  view: [number, number] = [800, 400];
 
-  // Define chart options
   showXAxis = true;
   showYAxis = true;
-  gradient = false;
+  gradient = true;
   showLegend = true;
   showLabels = true;
-  explodeSlices = false;
-  doughnut = false;
+  explodeSlices = true;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['transactions']) {
@@ -52,7 +42,6 @@ export class DashboardChartsComponent implements OnChanges {
   }
 
   updateCharts() {
-    // Pie chart (Expense vs Income)
     const expense = this.transactions
       .filter((t) => t.isExpense)
       .reduce((sum, t) => sum + t.amount, 0);
@@ -62,33 +51,16 @@ export class DashboardChartsComponent implements OnChanges {
 
     this.pieChartData = [
       { name: 'Expenses', value: expense },
-      { name: 'Income', value: income },
+      { name: 'Income', value: income }
     ];
 
-    // Bar chart (Monthly Spending Trend)
-    const monthlyData = this.calculateMonthlySpendingTrend();
-    this.barChartData = monthlyData;
-
-    // Line chart (Balance Growth Over Time)
+    this.barChartData = this.calculateMonthlySpendingTrend();
     this.lineChartData = this.calculateBalanceGrowth();
   }
 
   calculateMonthlySpendingTrend() {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    const data = months.map((month, index) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return months.map((month, index) => {
       const monthData = this.transactions.filter(
         (t) => new Date(t.date).getMonth() === index
       );
@@ -97,20 +69,15 @@ export class DashboardChartsComponent implements OnChanges {
         .reduce((sum, t) => sum + t.amount, 0);
       return { name: month, value: monthlyExpense };
     });
-    return data;
   }
 
   calculateBalanceGrowth() {
-    if (!this.transactions || this.transactions.length === 0) {
-      return [];
-    }
-  
     let balance = 0;
     let seriesData = this.transactions.map((t) => {
       balance += t.isExpense ? -t.amount : t.amount;
       return { name: new Date(t.date).toISOString().split("T")[0], value: balance };
     });
-  
+
     return [
       {
         name: "Balance",

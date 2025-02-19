@@ -1,34 +1,42 @@
 <div class="charts-container">
-    <mat-card class="chart-card">
-      <h2>Expense vs Income</h2>
-      <ngx-charts-pie-chart 
-        [results]="pieChartData"
-        [view]="view"
-        [showLegend]="showLegend"
-        [doughnut]="doughnut">
-      </ngx-charts-pie-chart>
-    </mat-card>
-  
-    <mat-card class="chart-card">
-      <h2>Monthly Spending Trend</h2>
-      <ngx-charts-bar-vertical
-        [results]="barChartData"
-        [view]="view"
-        [showXAxis]="showXAxis"
-        [showYAxis]="showYAxis"
-        [gradient]="gradient">
-      </ngx-charts-bar-vertical>
-    </mat-card>
-  
-    <mat-card class="chart-card">
-      <h2>Balance Growth Over Time</h2>
-      <ngx-charts-line-chart
-        [results]="lineChartData"
-        [view]="view"
-        [showXAxis]="showXAxis"
-        [showYAxis]="showYAxis"
-        [gradient]="gradient">
-      </ngx-charts-line-chart>
-    </mat-card>
-  </div>
-  
+  <mat-card class="chart-card">
+    <h2>Expense vs Income</h2>
+    <ngx-charts-pie-chart
+      [results]="pieChartData"
+      [view]="view"
+      [gradient]="gradient"
+      [legend]="showLegend"
+      [labels]="showLabels"
+      [explodeSlices]="explodeSlices"
+      [doughnut]="true"
+      [animations]="true">
+    </ngx-charts-pie-chart>
+  </mat-card>
+
+  <mat-card class="chart-card">
+    <h2>Monthly Spending Trend</h2>
+    <ngx-charts-bar-vertical
+      [results]="barChartData"
+      [view]="view"
+      [showXAxis]="showXAxis"
+      [showYAxis]="showYAxis"
+      [gradient]="gradient"
+      [animations]="true"
+      [roundEdges]="true">
+    </ngx-charts-bar-vertical>
+  </mat-card>
+
+  <mat-card class="chart-card">
+    <h2>Balance Growth Over Time</h2>
+    <ngx-charts-line-chart
+      [results]="lineChartData"
+      [view]="view"
+      [showXAxis]="showXAxis"
+      [showYAxis]="showYAxis"
+      [gradient]="gradient"
+      [animations]="true"
+      [autoScale]="true"
+      [curve]="'monotoneX'">
+    </ngx-charts-line-chart>
+  </mat-card>
+</div>

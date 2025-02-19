@@ -18,6 +18,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { Sidebar } from 'primeng/sidebar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,7 +36,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
     AvatarModule,
     ToolbarModule,
     RouterModule,
-    NavbarComponent
+    NavbarComponent,
+    CardModule,
+    TableModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -45,7 +49,7 @@ export class DashboardComponent {
   totalExpense = 0;
   balance = 0;
   transactions: any[] = [];
-  displayedColumns: string[] = ['date', 'category', 'amount', 'description', 'actions'];
+  displayedColumns: string[] = ['date', 'category', 'amount', 'description'];
 
   constructor(
     private transactionService: CommonService,
