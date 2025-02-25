@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { Sidebar } from 'primeng/sidebar';
 import { ToolbarModule } from 'primeng/toolbar';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @Component({
   selector: 'app-navbar',
@@ -33,15 +34,33 @@ import { ToolbarModule } from 'primeng/toolbar';
         AvatarModule,
         ToolbarModule,
         RouterModule,
+        PanelMenuModule 
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-
+  menuItems: any[];
   constructor(
     private dialog: MatDialog
-  ) {}
+  ) {
+
+    this.menuItems = [
+      { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
+      { label: 'Transactions', icon: 'pi pi-indian-rupee', routerLink: ['/alltransaction'] },
+      {
+        label: 'Reports',
+        icon: 'pi pi-chart-bar',
+        items: [
+          { label: 'Income & Expense Summary', icon: 'pi pi-chart-line', routerLink: ['/reports/income-expense-report'] },
+          { label: 'Category-wise Spending', icon: 'pi pi-tags', routerLink: ['/reports/category-spending-report'] },
+          { label: 'Monthly Spending Trend', icon: 'pi pi-calendar', routerLink: ['/reports/monthly-trend-report'] }
+        ]
+      }
+    ];
+
+  }
+
 
 
   openProfileModal() {

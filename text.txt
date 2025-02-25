@@ -1,0 +1,117 @@
+1. Login Page
+Functionality:
+A simple login form to accept email and password.
+On successful login, store the JWT token in local storage and redirect to the Dashboard page.
+Design:
+A clean, minimalistic form with two fields:
+Email (Text input)
+Password (Password input)
+A Login button.
+An option to go to the Registration Page (for new users).
+Routing:
+URL: /login
+Redirect to: /dashboard upon successful login.
+2. Registration Page
+Functionality:
+A form to register a new user with email, password, and confirm password.
+On successful registration, log the user in and redirect to the Dashboard page.
+Design:
+Form with fields:
+Email (Text input)
+Password (Password input)
+Confirm Password (Password input)
+Sign Up button.
+A link to go to the Login Page for existing users.
+Routing:
+URL: /register
+Redirect to: /dashboard after successful registration.
+3. Dashboard Page
+Functionality:
+Display an overview of the user's finances (like total income, expenses, balance).
+Option to add new income/expense transactions.
+A list view showing all past transactions.
+Design:
+Financial summary: Display total income, expenses, and balance at the top.
+Add Transaction Button: A button to open a modal or navigate to a page where the user can add a new transaction.
+Transactions List: Display a table/grid of transactions, with columns such as:
+Date
+Category (e.g., Income, Expense)
+Amount
+Description
+Logout Button: Option to log out and redirect to the Login Page.
+Routing:
+URL: /dashboard
+Redirect to: /login on logout.
+4. Add Transaction Page/Modal
+Functionality:
+Allows users to add new income or expense transactions.
+Amount, Category (dropdown), and Description fields.
+Design:
+Form with:
+Amount (numeric input)
+Category (dropdown/select with options like Income, Expense)
+Description (text input)
+Save button to add the transaction.
+Cancel button to close the form without saving.
+Routing:
+URL: /add-transaction
+Redirect to: /dashboard after saving the transaction.
+5. Edit Transaction Page/Modal
+Functionality:
+Allows users to edit an existing transaction.
+The same fields as the Add Transaction page, but pre-populated with the transaction details.
+Design:
+Form with fields like:
+Amount (numeric input)
+Category (dropdown/select with options like Income, Expense)
+Description (text input)
+Save Changes button.
+Cancel button to discard the changes.
+Routing:
+URL: /edit-transaction/:id (Pass the transaction ID as a parameter).
+Redirect to: /dashboard after saving the changes.
+6. Transaction Details Page
+Functionality:
+Show full details of a specific transaction when clicked from the transaction list.
+Design:
+Display:
+Amount
+Category
+Description
+Date
+Option to Edit or Delete the transaction.
+Routing:
+URL: /transaction-details/:id (Pass the transaction ID as a parameter).
+7. Transaction History Page
+Functionality:
+A detailed list or table view of all transactions.
+Filter by date range, category, or amount.
+Design:
+Filters at the top of the page (e.g., date range picker, category dropdown).
+A table or grid with the following columns:
+Date
+Category
+Amount
+Description
+Routing:
+URL: /transaction-history
+8. Profile Page (Optional):
+Functionality:
+Show basic user info (like name, email).
+Allow the user to update their email and password.
+Design:
+Display user details at the top.
+Form to change email or password.
+Save Changes button.
+Routing:
+URL: /profile
+
+
+
+Basic Navigation Flow
+Login Page → Registration Page (if new user).
+After successful login or registration, redirect to Dashboard Page.
+From the Dashboard:
+Click on Add Transaction → Redirect to Add Transaction Page.
+View Transaction History → Redirect to Transaction History Page.
+Logout → Redirect to Login Page.

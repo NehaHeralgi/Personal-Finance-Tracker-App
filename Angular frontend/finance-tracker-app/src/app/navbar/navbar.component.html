@@ -20,12 +20,14 @@
                   <div>
                       <p-button type="button" (onClick)="closeCallback($event)" icon="pi pi-times" rounded="true" outlined="true" styleClass="h-2rem w-2rem"></p-button>
                   </div>
-                  <div >
-                    <p-button [routerLink]="['/dashboard']">Dashboard</p-button>
-                    <p-button [routerLink]="['/alltransaction']">Transactions</p-button>
-                    <p-button>Reports</p-button>
+                  <!-- <div >
+                    <p-button icon="pi pi-slack"  [routerLink]="['/dashboard']">Dashboard</p-button>
+                    <p-button icon="pi pi-indian-rupee" [routerLink]="['/alltransaction']">Transactions</p-button>
+                    <p-button icon="pi pi-chart-bar" routerLink="/reports">Reports</p-button>
                     <p-button>Settings</p-button>
-                  </div>
+                  </div> -->
+                  <p-panelMenu [model]="menuItems" class="sidebar-menu"></p-panelMenu>
+
               </div>
 
           </div>

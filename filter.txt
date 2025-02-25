@@ -1,0 +1,21 @@
+      <tr>
+        <!-- Filters -->
+        <th>
+          <p-calendar [(ngModel)]="dateFilter" dateFormat="yy-mm-dd" placeholder="Filter Date" (onSelect)="applyFilter()"></p-calendar>
+        </th>
+        <th>
+          <p-dropdown
+            [options]="categories"
+            [(ngModel)]="categoryFilter"
+            placeholder="Select Category"
+            (onChange)="applyFilter()"
+          ></p-dropdown>
+        </th>
+        <th>
+          <input pInputText type="number" [(ngModel)]="amountFilter" placeholder="Filter Amount" (input)="applyFilter()" />
+        </th>
+        <th>
+          <input pInputText type="text" [(ngModel)]="descriptionFilter" placeholder="Filter Description" (input)="applyFilter()" />
+        </th>
+        <th></th>
+      </tr>
