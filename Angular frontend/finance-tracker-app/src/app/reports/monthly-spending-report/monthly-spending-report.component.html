@@ -1,1 +1,53 @@
-<p>monthly-spending-report works!</p>
+<div class="report-container">
+    <h2>Monthly Spending Report</h2>
+    
+    <!-- Filters -->
+    <div class="filters">
+      <p-dropdown [(ngModel)]="selectedCategory" [options]="categoryOptions"
+        placeholder="Select Category" (onChange)="applyFilters()">
+      </p-dropdown>
+  
+      <input type="number" [(ngModel)]="minAmount" placeholder="Min Amount" (input)="applyFilters()">
+      <input type="number" [(ngModel)]="maxAmount" placeholder="Max Amount" (input)="applyFilters()">
+  
+      <p-calendar [(ngModel)]="dateRange.start" placeholder="Start Date" (onSelect)="applyFilters()"></p-calendar>
+      <p-calendar [(ngModel)]="dateRange.end" placeholder="End Date" (onSelect)="applyFilters()"></p-calendar>
+  
+      <p-dropdown [(ngModel)]="type" [options]="[{ label: 'Income', value: 'income' }, { label: 'Expense', value: 'expense' }]"
+        placeholder="Type" (onChange)="applyFilters()">
+      </p-dropdown>
+    </div>
+  
+    <p-button label="{{ isChartView ? 'View Table' : 'View Chart' }}" (click)="toggleView()"></p-button>
+  
+    <!-- Table View -->
+    <p-table *ngIf="!isChartView" [value]="filteredTransactions" [paginator]="true" [rows]="5">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+          <th pSortableColumn="categoryName">Category <p-sortIcon field="categoryName"></p-sortIcon></th>
+          <th pSortableColumn="amount">Amount <p-sortIcon field="amount"></p-sortIcon></th>
+          <th>Description</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.date | date:'shortDate' }}</td>
+          <td>{{ transaction.categoryName }}</td>
+          <td>₹{{ transaction.amount }}</td>
+          <td>{{ transaction.description }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+    <!-- Chart View -->
+    <ngx-charts-bar-vertical *ngIf="isChartView" 
+      [results]="chartData"
+      [scheme]="'cool'"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showDataLabel]="true">
+    </ngx-charts-bar-vertical>
+  </div>
+  

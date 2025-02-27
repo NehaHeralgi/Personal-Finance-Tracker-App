@@ -1,0 +1,18 @@
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  p-table {
+    width: 100%;
+  }
+  
+  p-chart {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+  }
+  

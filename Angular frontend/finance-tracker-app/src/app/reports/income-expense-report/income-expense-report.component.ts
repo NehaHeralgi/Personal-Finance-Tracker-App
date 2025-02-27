@@ -5,11 +5,12 @@ import { NavbarComponent } from '../../navbar/navbar.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-income-expense-report',
   standalone: true,
-  imports: [NavbarComponent,TableModule,NgxChartsModule,ChartModule,ButtonModule],
+  imports: [NavbarComponent,TableModule,NgxChartsModule,ChartModule,ButtonModule,CardModule],
   templateUrl: './income-expense-report.component.html',
   styleUrl: './income-expense-report.component.css'
 })

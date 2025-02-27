@@ -54,7 +54,7 @@ export class NavbarComponent {
         items: [
           { label: 'Income & Expense Summary', icon: 'pi pi-chart-line', routerLink: ['/reports/income-expense-report'] },
           { label: 'Category-wise Spending', icon: 'pi pi-tags', routerLink: ['/reports/category-spending-report'] },
-          { label: 'Monthly Spending Trend', icon: 'pi pi-calendar', routerLink: ['/reports/monthly-trend-report'] }
+          { label: 'Monthly Spending Trend', icon: 'pi pi-calendar', routerLink: ['/reports/monthly-spending-report'] }
         ]
       }
     ];

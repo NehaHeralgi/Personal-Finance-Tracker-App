@@ -5,6 +5,7 @@
 <p-button [label]="toggleButtonLabel" icon="pi pi-chart-bar" (click)="toggleView()" class="p-mb-3"></p-button>
 
 <!-- Table View -->
+<p-card >
 <p-table *ngIf="!showChart" [value]="summaryData" class="p-datatable">
   <ng-template pTemplate="header">
     <tr>
@@ -21,6 +22,8 @@
     </tr>
   </ng-template>
 </p-table>
+
+</p-card >
 
 <!-- Chart View -->
 <p-chart *ngIf="showChart" type="bar" [data]="chartData"></p-chart>

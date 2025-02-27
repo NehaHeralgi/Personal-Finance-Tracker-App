@@ -1,0 +1,14 @@
+.report-container {
+    padding: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters p-dropdown, .filters input, .filters p-calendar {
+    width: 180px;
+  }
+  
