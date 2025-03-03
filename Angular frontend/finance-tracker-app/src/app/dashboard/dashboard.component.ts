@@ -85,37 +85,4 @@ export class DashboardComponent {
     this.showTable = !this.showTable;
   }
 
-  openTransactionModal() {
-    const dialogRef = this.dialog.open(TransactionModalComponent, {
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'add') {
-        this.loadDashboardData();
-      }
-    });
-  }
-
-  editTransaction(transaction: any) {
-    const dialogRef = this.dialog.open(TransactionModalComponent, {
-      data: transaction
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'edit') {
-        this.loadDashboardData();
-      }
-    });
-  }
-
-  deleteTransaction(transactionId: number) {
-    if (confirm('Are you sure you want to delete this transaction?')) {
-      this.transactionService.deleteTransaction(transactionId).subscribe(() => {
-        this.loadDashboardData();
-      });
-    }
-  }
-  
-
 }

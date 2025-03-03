@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
 
 <div class="alltransaction-container">
-  <!-- Toolbar -->
   <p-toolbar>
     <h2>All Transactions</h2>
     <div class="p-toolbar-group-start">
@@ -18,7 +17,7 @@
   </p-toolbar>
 
   <p-card >
-  <!-- PrimeNG Data Table -->
+
   <p-table
     [value]="transactions"
     [paginator]="true"
@@ -29,8 +28,7 @@
     [(selection)]="selectedTransaction"
   >
 
-  <!-- filter -->
-    <!-- Date Column -->
+
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
